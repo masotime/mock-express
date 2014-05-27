@@ -11,8 +11,8 @@
   "author": "Benjamin Goh <masotime@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.3.1",
-    "extend": "^1.2.1"
+    "extend": "^1.2.1",
+    "express": "^3.8.0"
   },
   "devDependencies": {
     "precommit-hook": "^1.0.2",
