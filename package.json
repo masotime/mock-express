@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Creates a mock express application with mock route functionality to unit test routes",
   "main": "index.js",
+  "repository" : {
+    "type" : "git",
+    "url" : "http://github.com/masotime/mock-express.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": ""
