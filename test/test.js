@@ -36,4 +36,12 @@ describe('mockExpress', function() {
 
 	});
 
+	it ('should return / for path() if no route is specified', function() {
+		assert.equal(MockExpress().path(),'/');
+	});
+
+	it ('should return the specified route when path() is called', function() {
+		assert.equal(MockExpress('/pineapples').path(),'/pineapples');
+	});
+
 });
