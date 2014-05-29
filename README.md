@@ -1,6 +1,8 @@
 # Quick and dirty Express Router mock
 
-This provides a mock express object that you can attach routes to. The motivation was this is to have a mechanic for **pure** Unit Testing of routes, which don't rely on creating an instance of Express, and allows you to pass in mock `request` and `response` objects.
+This provides a mock express object that you can attach routes to. 
+
+The motivation was this is to have a mechanic for **pure** Unit Testing of routes which doesn't rely on creating an instance of Express. Additionally, I wanted to pass in mock `request` and `response` objects that I could later inspect for changes made by the controller.
 
 ## Quick start
 
