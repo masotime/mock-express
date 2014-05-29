@@ -1,6 +1,6 @@
 # Quick and dirty Express Router mock
 
-This provides a mock express object that you can attach routes to. Couldn't find a wheel someone already made so I made my own.
+This provides a mock express object that you can attach routes to. The motivation was this is to have a mechanic for **pure** Unit Testing of routes, which don't rely on creating an instance of Express, and allows you to pass in mock `request` and `response` objects.
 
 ## Quick start
 
@@ -29,6 +29,7 @@ Create and supply your own mock req and res objects:
 	var req = app.makeRequest({ 'host': 'http://www.google.com' });
 	var res = app.makeResponse(function(err, sideEffects) {
 		assertEqual(sideEffects.model.name, 'world');
+		done(); // this is the callback used by mocha to indicate test completion
 	});
 
 Call the route
@@ -36,6 +37,23 @@ Call the route
 	app.invoke('get', '/test?start=true', req, res);
 
 Note that your assertions should be in the callback passed to the makeResponse object, since most routes terminate with some kind of call to the response object. Currently there is no support for controllers that use `next()`.
+
+You do not need to pass in the `req` and `res` objects when calling `invoke()` if you use `makeRequest` and `makeResponse`. `invoke()` will automatically default to the last request and response mock objects made using those utility functions. Thus you could write `app.invoke('get', '/test?start=true')` above instead.
+
+## Timeouts due to assertion errors in callbacks
+
+If your assertions in the callbacks throw an error, then the test will **timeout** because the error is thrown in a callback.
+
+To avoid this, create your callback as follows:
+
+	var assertionCallback = app.makeAssertionCallback(done, function(err, sideEffects) {
+		<your assertions>
+	});
+	var res = app.makeResponse();
+
+Note that you should not call `done()` (or it's non-Mocha equivalent) directly if you create your callback in this manner.
+
+## Available side effects
 
 Currently you have the following available to check
 

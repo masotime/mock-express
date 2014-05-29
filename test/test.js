@@ -36,6 +36,62 @@ describe('mockExpress', function() {
 
 	});
 
+	it('should not require the user to pass in the req and res objects when invoking, if they used makeRequest and makeResponse', function(done) {
+		var app = MockExpress(); // notice there's no "new"
+
+		app.get('/test', function(req, res) {
+			var model = { name: 'world'};
+
+			if (req.query.start === 'true') {
+				res.render('index', model);
+			} else {
+				res.redirect('http://www.google.com');
+			}
+			
+		});
+
+		app.makeRequest({ 'host': 'http://www.google.com' });
+		app.makeResponse(function(err, sideEffects) {
+			assert.equal(sideEffects.model.name, 'world');
+
+			app.makeResponse(function(err, sideEffects) {
+				assert.equal(sideEffects.redirect, 'http://www.google.com');
+				done();
+			});
+
+			app.invoke('get', '/test');
+
+		});
+
+		app.invoke('get', '/test?start=true');
+	});
+
+	it('should support the makeAssertionCallback feature, which automatically catches assertion errors in the callback', function(done) {
+		var app = MockExpress(); // notice there's no "new"
+
+		app.get('/test', function(req, res) {
+			res.redirect('dumdedum');
+		});
+
+		app.makeRequest({ 'host': 'http://www.google.com' });
+		var callback = function(err) {
+			try {
+				assert.notEqual(err, undefined);
+				done();
+			} catch(e) {
+				done(e);
+			}
+		};
+
+		var assertionCallback = app.makeAssertionCallback(callback, function() {
+			assert.equal(1,2);
+		});
+
+		app.makeResponse(assertionCallback);
+
+		app.invoke('get', '/test');
+	});
+
 	it ('should return / for path() if no route is specified', function() {
 		assert.equal(MockExpress().path(),'/');
 	});
