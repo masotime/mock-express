@@ -3,13 +3,14 @@
   "version": "0.0.3",
   "description": "Creates a mock express application with mock route functionality to unit test routes",
   "main": "index.js",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/masotime/mock-express"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/masotime/mock-express"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": ""
+    "test": "mocha",
+    "lint": "",
+    "validate": "npm ls"
   },
   "precommit": [],
   "author": "Benjamin Goh <masotime@gmail.com>",
@@ -19,7 +20,12 @@
     "express": "^3.8.0"
   },
   "devDependencies": {
-    "precommit-hook": "^1.0.2",
-    "jshint": "^2.5.1"
-  }
+    "mocha": "^3.0.2",
+    "precommit-hook": "^3.0.0"
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "test"
+  ]
 }
