@@ -1,5 +1,7 @@
 # Quick and dirty Express Router mock
 
+**NOTE**: This uses Express 3 as a direct dependency because the `match` API was removed from the Router object in Express 4. I may try to reconcile this in the future.
+
 This provides a mock express object that you can attach routes to. 
 
 The motivation was this is to have a mechanic for **pure** Unit Testing of routes which doesn't rely on creating an instance of Express. Additionally, I wanted to pass in mock `request` and `response` objects that I could later inspect for changes made by the controller.
