@@ -1,6 +1,6 @@
 # Quick and dirty Express Router mock
 
-**NOTE**: This uses Express 3 as a direct dependency because the `match` API was removed from the Router object in Express 4. I may try to reconcile this in the future.
+_With version 1.0, this now supports Express 4.0 routes._
 
 This provides a mock express object that you can attach routes to. 
 
@@ -40,7 +40,9 @@ Call the route
 
 	app.invoke('get', '/test?start=true', req, res);
 
-Note that your assertions should be in the callback passed to the makeResponse object, since most routes terminate with some kind of call to the response object. Currently there is no support for controllers that use `next()`.
+Note that your assertions should be in the callback passed to the makeResponse object, since most routes terminate with some kind of call to the response object.
+
+With the transition to Express 4.x, this module now supports the use of `router.use()` syntax, which allows you to test error-handling middleware.
 
 You do not need to pass in the `req` and `res` objects when calling `invoke()` if you use `makeRequest` and `makeResponse`. `invoke()` will automatically default to the last request and response mock objects made using those utility functions. Thus you could write `app.invoke('get', '/test?start=true')` above instead.
 

@@ -16,8 +16,8 @@
   "author": "Benjamin Goh <masotime@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "extend": "^1.2.1",
-    "express": "^3.8.0"
+    "express": "^4.14.0",
+    "extend": "^1.2.1"
   },
   "devDependencies": {
     "mocha": "^3.0.2",
