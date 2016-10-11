@@ -92,6 +92,21 @@ describe('mockExpress', function() {
 		app.invoke('get', '/test');
 	});
 
+	it('should correctly invoke the last layer of error handling in a route', function(done) {
+		var app = MockExpress();
+
+		app.get('/test', function(req, res, next) {
+			next(new Error('hello'));
+		});
+
+		app.use(function(err, req, res, next) {
+			assert(err.message === 'hello');
+			done();
+		});
+
+		app.invoke('get', '/test');
+	});
+
 	it ('should return / for path() if no route is specified', function() {
 		assert.equal(MockExpress().path(),'/');
 	});
