@@ -66,6 +66,19 @@ describe('mockExpress', function() {
 		app.invoke('get', '/test?start=true');
 	});
 
+	it('should correctly throw errors on invalid usage of makeResponse and makeAssertionCallback', function(done) {
+		var app = MockExpress(); // notice there's no "new"
+
+		try {
+			assert.throws(function() { app.makeResponse({}); }, /requires a valid callback function/);
+			assert.throws(function() { app.makeAssertionCallback({}); }, /requires a valid callback function/);
+			assert.throws(function() { app.makeAssertionCallback(function() {}, {}); }, /requires a valid assertions function/);
+			done();
+		} catch (err) {
+			done(err);
+		}
+	});
+
 	it('should support the makeAssertionCallback feature, which automatically catches assertion errors in the callback', function(done) {
 		var app = MockExpress(); // notice there's no "new"
 
@@ -105,6 +118,34 @@ describe('mockExpress', function() {
 		});
 
 		app.invoke('get', '/test');
+	});
+
+	it('should not mutate req object supplied by user', function(done) {
+		var app = MockExpress();
+		var myReq = {
+			params: {
+				param1: 'one',
+				param2: 'two'
+			}
+		};
+
+		app.get('/test/:param1/:param2', function (req, res) {
+			res.render('test', {
+				param1: req.params.param1,
+				param2: req.params.param2
+			});
+		});
+
+		var assertionCallback = app.makeAssertionCallback(done, function(err, sideEffects) {
+			assert.equal(myReq.params.param1, 'one');
+			assert.equal(myReq.params.param2, 'two');
+			assert.equal(sideEffects.model.param1, 'hello');
+			assert.equal(sideEffects.model.param2, 'world');
+		});
+
+		app.makeResponse(assertionCallback);
+
+		app.invoke('get', '/test/hello/world', myReq);
 	});
 
 	it ('should return / for path() if no route is specified', function() {
