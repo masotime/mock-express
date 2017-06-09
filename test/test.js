@@ -148,6 +148,42 @@ describe('mockExpress', function() {
 		app.invoke('get', '/test/hello/world', myReq);
 	});
 
+	it('should return a body on res.send', function(done) {
+		var app = MockExpress();
+
+		app.get('/test/send', function (req, res) {
+			res.send('hello world');
+		});
+
+		var assertionCallback = app.makeAssertionCallback(done, function(err, sideEffects) {
+			assert.equal(sideEffects.send, 'hello world');
+		});
+
+		app.makeResponse(assertionCallback);
+
+		app.invoke('get', '/test/send');
+	});
+
+	it('should return json on res.json', function(done) {
+		var app = MockExpress();
+
+		app.get('/test/json', function (req, res) {
+			var content = {
+				hello: 'world'
+			};
+			
+			res.json(content);
+		});
+
+		var assertionCallback = app.makeAssertionCallback(done, function(err, sideEffects) {
+			assert.equal(sideEffects.json.hello, 'world');
+		});
+
+		app.makeResponse(assertionCallback);
+
+		app.invoke('get', '/test/json');
+	});
+
 	it ('should return / for path() if no route is specified', function() {
 		assert.equal(MockExpress().path(),'/');
 	});
