@@ -67,3 +67,5 @@ Currently you have the following available to check
 * `sideEffects.viewName` - the view name passed as the first argument to `res.render`.
 * `sideEffects.model` - the model object passed as the second argument to `res.render`
 * `sideEffects.session` - anything that is set into the session object.
+* `sideEffects.json` - the variable passed as the first argument to `res.json`
+* `sideEffects.send` - the variable passed as the first argument to `res.send`
