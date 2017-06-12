@@ -184,6 +184,16 @@ describe('mockExpress', function() {
 		app.invoke('get', '/test/json');
 	});
 
+	it ('should set and return settings', function(done) {
+		var app = MockExpress();
+
+		app.set('foo', 'bar');
+		const foo = app.get('foo');
+		assert.equal(foo, 'bar');
+
+		done();
+	});
+
 	it ('should return / for path() if no route is specified', function() {
 		assert.equal(MockExpress().path(),'/');
 	});
