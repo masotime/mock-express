@@ -210,6 +210,22 @@ describe('mockExpress', function() {
 		app.invoke('get', '/test/status');
 	});
 
+	it('should return end on res.end', function(done) {
+		var app = MockExpress();
+
+		app.get('/test/end', function (req, res) {
+			res.end('foo');
+		});
+
+		var assertionCallback = app.makeAssertionCallback(done, function(err, sideEffects) {
+			assert.equal(sideEffects.end, 'foo');
+		});
+
+		app.makeResponse(assertionCallback);
+
+		app.invoke('get', '/test/end');
+	});
+
 	it ('should add body to request', function(done) {
 		var app = MockExpress();
 
