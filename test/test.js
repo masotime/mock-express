@@ -226,24 +226,6 @@ describe('mockExpress', function() {
 		app.invoke('get', '/test/end');
 	});
 
-	it ('should add body to request', function(done) {
-		var app = MockExpress();
-
-		app.put('/test/body', function (req, res) {
-			assert.equal(typeof req.body, 'object');
-			res.status(201);
-		});
-
-		var assertionCallback = app.makeAssertionCallback(done, function(err, sideEffects) {
-			assert.equal(sideEffects.status, 201);
-		});
-
-		const req = app.makeRequest({ 'body': { foo: 'bar' } });
-		app.makeResponse(assertionCallback);
-
-		app.invoke('put', '/test/body', req);
-	});
-
 	it ('should return / for path() if no route is specified', function() {
 		assert.equal(MockExpress().path(),'/');
 	});
