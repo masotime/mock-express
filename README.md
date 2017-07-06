@@ -15,7 +15,7 @@ Create a mock express application:
 
 	var app = MockExpress(); // notice there's no "new"
 
-The object allows you to append routes with `get` and `post` only for now.
+Append a `get` route to your app
 
 	app.get('/test', function(req, res, next) {
 		var model = { name: 'world'};
