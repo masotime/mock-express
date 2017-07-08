@@ -29,7 +29,6 @@ describe('mockExpress', function() {
 			});
 
 			app.invoke('get', '/test', req, res);			
-
 		});
 
 		app.invoke('get', '/test?start=true', req, res);
@@ -232,6 +231,29 @@ describe('mockExpress', function() {
 
 	it ('should return the specified route when path() is called', function() {
 		assert.equal(MockExpress('/pineapples').path(),'/pineapples');
+	});
+
+	it('should accept invocations of routes without use of optional parameter', function() {
+		var app = MockExpress();
+		var invocations = 0;
+
+		app.get('/teams/new/:step?', function(req, res) {
+			res.send(req.params.step);
+		});
+
+		var req = app.makeRequest();
+		var resAssertUndefined = app.makeResponse(function(err, sideEffects) {
+			assert.equal(sideEffects.send, undefined);
+			invocations += 1;
+		});
+		var resAssertOne = app.makeResponse(function(err, sideEffects) {
+			assert.equal(sideEffects.send, '1');
+			invocations += 1;
+		});
+
+		app.invoke('get', '/teams/new', req, resAssertUndefined);
+		app.invoke('get', '/teams/new/1', req, resAssertOne);
+		assert.equal(invocations, 2);
 	});
 
 });
