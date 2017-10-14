@@ -193,11 +193,11 @@ describe('mockExpress', function() {
 		done();
 	});
 
-	it('should return status on res.status', function(done) {
+	it('should return status on res.sendStatus', function(done) {
 		var app = MockExpress();
 
 		app.get('/test/status', function (req, res) {
-			res.status(404);
+			res.sendStatus(404);
 		});
 
 		var assertionCallback = app.makeAssertionCallback(done, function(err, sideEffects) {
