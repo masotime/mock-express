@@ -1,6 +1,6 @@
 {
   "name": "mock-express",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Creates a mock express application with mock route functionality to unit test routes",
   "main": "index.js",
   "repository": {
