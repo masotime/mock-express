@@ -256,4 +256,32 @@ describe('mockExpress', function() {
 		assert.equal(invocations, 2);
 	});
 
+	it('should work using post method', function(done) {
+		var app = MockExpress(); // notice there's no "new"
+
+		app.post('/test', function(req, res) {
+			var model = { name: 'world'};
+			if (req.body.start === true) {
+				res.render('index', model);
+			} else {
+				res.redirect('http://www.google.com');
+			}
+		});
+
+		var firstReq = app.makeRequest({ body: { start: true } });
+		var secondReq = app.makeRequest({ body: { start: false } });
+		var res = app.makeResponse(function(err, sideEffects) {
+			assert.equal(sideEffects.model.name, 'world');
+
+			var res = app.makeResponse(function(err, sideEffects) {
+				assert.equal(sideEffects.redirect, 'http://www.google.com');
+				done();
+			});
+
+			app.invoke('post', '/test', secondReq, res);
+		});
+
+		app.invoke('post', '/test', firstReq, res);
+
+	});
 });
