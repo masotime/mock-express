@@ -237,7 +237,13 @@ describe('mockExpress', function() {
 		var app = MockExpress();
 		var invocations = 0;
 
-		app.get('/teams/new/:step?', function(req, res) {
+		// NOTE: This changed in Express 5.0 ref: https://betterstack.com/community/guides/scaling-nodejs/express-5-new-features/#path-route-matching-improvements
+		// Express 4 example
+		// app.get('/user/:id?', (req, res) => res.send(req.params.id || 'No ID'));
+
+		// Express 5 example
+		// app.get('/user{/:id}', (req, res) => res.send(req.params.id || 'No ID'));
+		app.get('/teams/new{/:step}', function(req, res) {
 			res.send(req.params.step);
 		});
 
